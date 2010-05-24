@@ -7,12 +7,10 @@ my $dir = $ENV{HOME};
 my $undefcount = 0;
 mkdir "$dir/Cah/";
 my $m = WWW::Mechanize->new();
-foreach my $NUM (1..49,51..100000) {
+foreach my $NUM (1..100000) {
 	my $URL="http://explosm.com/comics/$NUM/";
 	print "Loading #$NUM\n";
-	unless($m->get($URL)){
-		warn "Error...\n";
-	}
+	$m->get($URL);
 	my $image = $m->find_image( url_regex => qr/comics/i);
 	if (defined $image){
 		$m->get( $image->url() );
@@ -23,7 +21,7 @@ foreach my $NUM (1..49,51..100000) {
 	else {
 		print "Skipping...\n";
 		my $undefcount = $undefcount + 1;
-		if ($undefcount gt 10){
+		if ($undefcount gt 2){
 			print "Looks like the archive is over... you may want to check anyways though.....\n";
 			exit;
 		}
